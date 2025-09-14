@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aesthetics by Tina Marie | Non-Surgical Aesthetic Treatments | Rossendale</title>
+    <meta name="description" content="Professional non-surgical aesthetic treatments in Rossendale. Anti-wrinkle injections, dermal fillers, skin boosters, and advanced facial treatments by qualified practitioner Tina Marie.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v23.0&appId=YOUR_APP_ID"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Enhanced Setmore Booking Integration -->
+    <script>
+      // Inline Setmore integration to ensure it loads properly
+      var isBookingPageLoaded = false;
+      
+      var initalFrameLoad = function () {
+        const loader = document.querySelector('.iframe_loader');
+        const iframeContent = document.getElementById('iframeContent');
+        
+        if (loader) loader.style.display = 'none';
+        if (iframeContent) iframeContent.style.display = 'block';
+
+        const fancyBox = document.getElementById('setmore-fancy-box');
+        const fancyBoxHeight = fancyBox ? fancyBox.offsetHeight : 0;
+        const windowHeight = window.innerHeight;
+
+        const content = document.getElementById('setmore-fancy-box-content');
+        if (content) {
+          if (windowHeight > fancyBoxHeight) {
+            content.style.height = '635px';
+          } else {
+            content.style.height = (windowHeight - 50) + 'px';
+          }
+        }
+      };
+
+      var setmorePopup = function (e, bookingPageLink) {
+        console.log('Opening Setmore popup with URL:', bookingPageLink);
+        
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+        }
+
+        const windowWidth = window.innerWidth;
+        if (windowWidth < 600) {
+          console.log('Mobile detected, opening in new window');
+          window.open(bookingPageLink, '_blank');
+          return;
+        }
+
+        const templ = {
+          overlay: '<div id="setmore-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9998; backdrop-filter: blur(2px);"></div>',
+          popup: `<div id="setmore-fancy-box" style="background-color: #FFFFFF; height: auto; left: 50%; position: fixed; top: 50%; width: 90%; max-width: 545px; z-index: 9999; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transform: translate(-50%, -50%); animation: fadeIn 0.3s ease-out;">
+            <button id="setmore-fancy-box-close-icon" style="position: absolute; top: 15px; right: 15px; background: rgba(232, 180, 184, 0.9); border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10000; transition: all 0.3s ease;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11" fill="none">
+                <path d="M1.3335 0.674316L10.6668 10.0076" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10.6668 0.674316L1.3335 10.0076" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div id="setmore-fancy-box-content" style="border-radius: 12px; overflow: hidden;">
+              <div class="iframe_loader" style="display: flex; align-items: center; justify-content: center; height: 400px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                <div style="text-align: center;">
+                  <div style="width: 48px; height: 48px; border: 3px solid #E8B4B8; border-top: 3px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
+                  <p style="color: #6c757d; font-family: Inter, sans-serif; font-size: 14px; margin: 0;">Loading booking system...</p>
+                </div>
+              </div>
+              <div id="iframeContent" style="height: 100%; width: 100%; display: none;"></div>
+            </div>
+          </div>
+          <style>
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            @keyframes fadeIn {
+              0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+              100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            }
+            #setmore-fancy-box-close-icon:hover {
+              background: rgba(232, 180, 184, 1) !important;
+              transform: scale(1.1);
+            }
+          </style>`
+        };
+
+        const init = function () {
+          if (!isBookingPageLoaded) {
+            isBookingPageLoaded = true;
+            renderTempl();
+          } else {
+            loadIframe();
+            positionPopup();
+            showPopup();
+          }
+        };
+
+        const renderTempl = function () {
+          // Remove existing popup if any
+          const existingOverlay = document.getElementById('setmore-overlay');
+          const existingPopup = document.getElementById('setmore-fancy-box');
+          if (existingOverlay) existingOverlay.remove();
+          if (existingPopup) existingPopup.remove();
+          
+          document.body.insertAdjacentHTML('beforeend', templ.overlay);
+          document.body.insertAdjacentHTML('beforeend', templ.popup);
+          positionPopup();
+          loadIframe();
+          bindEvents();
+        };
+
+        const loadIframe = function () {
+          const loader = document.querySelector('.iframe_loader');
+          const iframeContent = document.getElementById('iframeContent');
+          
+          if (loader) loader.style.display = 'flex';
+          if (iframeContent) iframeContent.style.display = 'none';
+
+          if (iframeContent) {
+            iframeContent.innerHTML = `<iframe allow="web-share; payment" id="setmore-fancy-box-iframe" frameborder="0" hspace="0" scrolling="auto" src="${bookingPageLink}" style="width: 100%; height: 635px; border: none;"></iframe>`;
+            
+            const iframe = document.getElementById('setmore-fancy-box-iframe');
+            if (iframe) {
+              iframe.onload = function () {
+                console.log('Iframe loaded successfully');
+                return initalFrameLoad();
+              };
+              iframe.onerror = function () {
+                console.error('Error loading iframe');
+              };
+            }
+          }
+        };
+
+        const bindEvents = function () {
+          const overlay = document.getElementById('setmore-overlay');
+          const closeIcon = document.getElementById('setmore-fancy-box-close-icon');
+          
+          if (overlay) {
+            overlay.addEventListener('click', hidePopup);
+          }
+          if (closeIcon) {
+            closeIcon.addEventListener('click', hidePopup);
+          }
+
+          // Close on escape key
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+              hidePopup();
+            }
+          });
+        };
+
+        const positionPopup = function () {
+          const windowHeight = window.innerHeight;
+          const documentHeight = document.documentElement.scrollHeight;
+          const overlay = document.getElementById('setmore-overlay');
+          
+          if (overlay) {
+            overlay.style.height = Math.max(documentHeight, windowHeight) + 'px';
+          }
+          
+          document.body.style.overflow = 'hidden';
+        };
+
+        const hidePopup = function () {
+          console.log('Hiding popup');
+          const overlay = document.getElementById('setmore-overlay');
+          const fancyBox = document.getElementById('setmore-fancy-box');
+          
+          if (overlay) overlay.remove();
+          if (fancyBox) fancyBox.remove();
+          
+          document.body.style.overflow = 'auto';
+          isBookingPageLoaded = false; // Reset for next use
+        };
+
+        const showPopup = function () {
+          const overlay = document.getElementById('setmore-overlay');
+          const fancyBox = document.getElementById('setmore-fancy-box');
+          
+          if (overlay) overlay.style.display = 'block';
+          if (fancyBox) fancyBox.style.display = 'block';
+        };
+
+        init();
+      };
+
+      // Initialize the booking system
+      var initSetmoreBooking = function() {
+        console.log('Initializing Setmore booking system');
+        
+        // Handle custom events from React components
+        window.addEventListener('setmore-booking', function(e) {
+          console.log('Custom booking event received:', e.detail);
+          setmorePopup(null, e.detail.url);
+        });
+        
+        // Find all booking buttons and links
+        const bookingButtons = document.querySelectorAll('[data-setmore-booking], [href*="setmore.com"], #Setmore_button_iframe');
+        console.log('Found booking buttons:', bookingButtons.length);
+        
+        bookingButtons.forEach((button, index) => {
+          console.log('Setting up button', index, button);
+          
+          // Remove existing event listeners
+          button.removeEventListener('click', handleBookingClick);
+          button.addEventListener('click', handleBookingClick);
+        });
+        
+        function handleBookingClick(e) {
+          console.log('Booking button clicked:', this);
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+
+          let bookingPageLink = this.getAttribute('href') || this.getAttribute('data-booking-url') || 'https://aestheticsbytinamarie.setmore.com';
+          
+          try {
+            const parsedBookingUrl = new URL(bookingPageLink);
+            if (parsedBookingUrl.hostname.endsWith('setmore.com')) {
+              setmorePopup(e, bookingPageLink);
+            } else {
+              const invalidPath = parsedBookingUrl.pathname + parsedBookingUrl.search;
+              const newBookingUrl = 'https://booking.setmore.com' + invalidPath;
+              setmorePopup(e, invalidPath === '/' || invalidPath === '' ? 'https://booking.setmore.com/invalidurl' : newBookingUrl);
+            }
+          } catch (error) {
+            console.error('Error parsing booking URL:', error);
+            setmorePopup(e, 'https://aestheticsbytinamarie.setmore.com');
+          }
+        }
+      };
+
+      // Initialize when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          console.log('DOM loaded, initializing booking system');
+          initSetmoreBooking();
+        });
+      } else {
+        console.log('DOM already loaded, initializing booking system');
+        initSetmoreBooking();
+      }
+
+      // Re-initialize when new content is added (for React components)
+      var observer = new MutationObserver(function(mutations) {
+        var shouldReinit = false;
+        mutations.forEach(function(mutation) {
+          if (mutation.addedNodes.length > 0) {
+            for (var i = 0; i < mutation.addedNodes.length; i++) {
+              var node = mutation.addedNodes[i];
+              if (node.nodeType === 1) { // Element node
+                if (node.querySelector && (node.querySelector('[data-setmore-booking]') || node.hasAttribute('data-setmore-booking'))) {
+                  shouldReinit = true;
+                  break;
+                }
+              }
+            }
+          }
+        });
+        
+        if (shouldReinit) {
+          console.log('New booking elements detected, reinitializing');
+          setTimeout(initSetmoreBooking, 100);
+        }
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+
+      console.log('Setmore integration script loaded');
+    </script>
+    
+    <!-- Floating Book Now Button -->
+    <a style='float:none;position: fixed; right: 20px; bottom: 20px; display: block; z-index: 20000; background: #000000; padding: 12px 20px; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); transition: all 0.3s ease; font-family: Inter, sans-serif;' 
+       id='Setmore_button_iframe' 
+       href='https://aestheticsbytinamarie.setmore.com'
+       data-setmore-booking="true"
+       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 25px rgba(0, 0, 0, 0.6)'"
+       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0, 0, 0, 0.4)'">
+      Book Now
+    </a>
+  </body>
+</html>
+

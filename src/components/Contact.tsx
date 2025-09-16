@@ -24,7 +24,7 @@ const Contact = () => {
     {
       icon: Clock,
       title: 'Opening Hours',
-      details: 'Flexible appointment times available',
+      details: 'Wed & Thu: 10:00 AM - 9:00 PM | Sat: 11:00 AM - 6:00 PM',
       action: null
     }
   ];
@@ -72,6 +72,47 @@ const Contact = () => {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Detailed Opening Hours */}
+            <div className="bg-white rounded-xl shadow-md p-6 mb-8">
+              <h3 className="text-xl font-semibold text-navy-900 mb-4 flex items-center">
+                <Clock className="h-5 w-5 mr-2" />
+                Opening Hours
+              </h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between py-1">
+                  <span className="text-gray-600">Monday</span>
+                  <span className="text-gray-500">Closed</span>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span className="text-gray-600">Tuesday</span>
+                  <span className="text-gray-500">Closed</span>
+                </div>
+                <div className="flex justify-between py-1 bg-gray-50 px-2 rounded">
+                  <span className="text-navy-900 font-medium">Wednesday</span>
+                  <span className="text-navy-900 font-medium">10:00 AM - 9:00 PM</span>
+                </div>
+                <div className="flex justify-between py-1 bg-gray-50 px-2 rounded">
+                  <span className="text-navy-900 font-medium">Thursday</span>
+                  <span className="text-navy-900 font-medium">10:00 AM - 9:00 PM</span>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span className="text-gray-600">Friday</span>
+                  <span className="text-gray-500">Closed</span>
+                </div>
+                <div className="flex justify-between py-1 bg-gray-50 px-2 rounded">
+                  <span className="text-navy-900 font-medium">Saturday</span>
+                  <span className="text-navy-900 font-medium">11:00 AM - 6:00 PM</span>
+                </div>
+                <div className="flex justify-between py-1">
+                  <span className="text-gray-600">Sunday</span>
+                  <span className="text-gray-500">Closed</span>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mt-3">
+                Appointments available during opening hours. Book online or call to schedule.
+              </p>
             </div>
 
             {/* Quick Booking Section */}
